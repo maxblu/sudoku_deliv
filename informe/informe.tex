@@ -1,0 +1,239 @@
+
+%===================================================================================
+% JORNADA CIENTÍFICA ESTUDIANTIL 2013 - MATCOM, UH
+%===================================================================================
+% Esta plantilla ha sido diseñada para ser usada en los artículos de la
+% Jornada Científica Estudiantil, MatCom 2015.
+%
+% Por favor, siga las instrucciones de esta plantilla y rellene en las secciones
+% correspondientes.
+%
+% NOTA: Necesitará el archivo 'jcematcom.sty' en la misma carpeta donde esté este
+%       archivo para poder utilizar esta plantila.
+%===================================================================================
+
+
+
+%===================================================================================
+% PREÁMBULO
+%-----------------------------------------------------------------------------------
+\documentclass[a4paper,10pt,twocolumn]{article}
+
+%===================================================================================
+% Paquetes
+%-----------------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{jcematcom}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage[pdftex]{hyperref}
+%-----------------------------------------------------------------------------------
+% Configuración
+%-----------------------------------------------------------------------------------
+\hypersetup{colorlinks,%
+	    citecolor=black,%
+	    filecolor=black,%
+	    linkcolor=black,%
+	    urlcolor=blue}
+
+%===================================================================================
+
+
+
+%===================================================================================
+% Presentacion
+%-----------------------------------------------------------------------------------
+% Título
+%-----------------------------------------------------------------------------------
+\title{Documento de Ejemplo para la Jornada Científica Estudiantil}
+
+%-----------------------------------------------------------------------------------
+% Autores
+%-----------------------------------------------------------------------------------
+\author{\\
+\name Daniel de la Osa Fernandez \email \href{mailto:d.osa@estudiantes.matcom.uh.cu}{d.osa@estudiantes.matcom.uh.cu}
+	\\ \addr Grupo C-411}
+
+%-----------------------------------------------------------------------------------
+% Tutores
+%-----------------------------------------------------------------------------------
+\tutors{\\
+Dr. Tutor Uno, \emph{Centro} \\
+Lic. Tutor Dos, \emph{Centro}}
+
+%-----------------------------------------------------------------------------------
+% Headings
+%-----------------------------------------------------------------------------------
+\jcematcomheading{2015}{1-\pageref{end}}{A. Uno, A. Dos}
+
+%-----------------------------------------------------------------------------------
+\ShortHeadings{Ejemplo JCE}{Autores}
+%===================================================================================
+
+
+
+%===================================================================================
+% DOCUMENTO
+%-----------------------------------------------------------------------------------
+\begin{document}
+
+%-----------------------------------------------------------------------------------
+% NO BORRAR ESTA LINEA!
+%-----------------------------------------------------------------------------------
+\twocolumn[
+%-----------------------------------------------------------------------------------
+
+\maketitle
+
+%===================================================================================
+% Resumen y Abstract
+%-----------------------------------------------------------------------------------
+\selectlanguage{spanish} % Para producir el documento en Español
+
+%-----------------------------------------------------------------------------------
+% Resumen en Español
+%-----------------------------------------------------------------------------------
+\begin{abstract}
+
+Con este proyecto se quiere mostrar una implementación de una solución para una variación del Sudoku donde las figuras que conforman el tablero de $9 X 9$ son figuras conexas que pueden tener diferentes formas no solo las típicas cuadradas $3 x 3 $. Esto se logró usando el lenguaje Haskell haciendo uso del paradigma declarativo-funcional muy acorde a la naturaleza combinatoria del problema
+
+\end{abstract}
+
+%-----------------------------------------------------------------------------------
+% English Abstract
+%-----------------------------------------------------------------------------------
+\vspace{0.5cm}
+
+
+
+%-----------------------------------------------------------------------------------
+% Palabras clave
+%-----------------------------------------------------------------------------------
+
+
+%-----------------------------------------------------------------------------------
+% NO BORRAR ESTAS LINEAS!
+%-----------------------------------------------------------------------------------
+\vspace{0.8cm}
+]
+%-----------------------------------------------------------------------------------
+
+
+%===================================================================================
+
+%===================================================================================
+% Introducción
+%-----------------------------------------------------------------------------------
+\section{Introducción}\label{sec:intro}
+%-----------------------------------------------------------------------------------
+El problema  resolver consiste en: dado un conjunto de nominoes, que no son mas que las piezas que conforman el Sudoku, deben ser encajadas de forma que formen el tablero clásico del Sudoku, un cuadrado de $ 9 X 9$. 
+
+Luego de haber logrado este tarea se precede a resolver el Sudoku resultante llenando todas las casillas en blanco del $1 - 9$. Todo esto cumpliendo las restricciones del juego de que no puede haber números repetidos en la misma fila columna o nomino que conforma el tablero. 
+
+Como se puede apreciar el problema pasa por un problema combinatorio que se reduce primeramente a de cuantas formas puede colocar los nominoes en un cuadro de  $9 X 9$. Y luego pasamos al otro, que sería de cuantas formas se puede fijar los números del  $1 - 9 $, en  las casillas en blanco de forma tal que cumplan las restricciones del juego.   
+
+%===================================================================================
+
+
+
+%===================================================================================
+% Desarrollo
+%-----------------------------------------------------------------------------------
+\section{Detalles para la Implementación}\label{sec:dev}
+%-----------------------------------------------------------------------------------
+Para poder abordar el problema con menor complejidad se declararon nuevos tipos y así lograr una mayor abstracción y facilitar la solución. Estos tipos son : 
+
+\begin{itemize}
+	\item \emph{Nomino}
+	\item \emph{Sudoku}
+\end{itemize}
+  
+Con estos tipos se modelaron los principales componentes del problema. Cada una se declaró usando records de Haskell y podemos verlo a continuación en este fragmento de código.   
+
+%% aqui la imagen del codigo
+
+La base de los nominos son lista de tuplas donde el primer elemento es la coordenada $i$ indicando la fila, el segundo es la coordenada $j $ para indicar la columna , con estos indices se indica la posición de cada celda del nomino en el tablero. El ultimo elemento de la tupla es el valor de la casilla que puede ser $0$ si es vació o  un número del $1 $  al $9$. 
+
+Por otro lado el Sudoku esta conformado por una lista de nominos, un tablero representado por una matriz matemática clásica y una matriz de posibilidades que contiene en $[i,j]$ la lista de posibles valores, dadas las restricciones del Sudoku, que puede tomar la casilla $[i,j]$ en el tablero, si ya tiene fijado un número pues su correspondiente lista es vacía. 	   
+
+
+	
+
+
+
+%===================================================================================
+% Conclusiones
+%-----------------------------------------------------------------------------------
+\section{Ideas para la Solución}\label{sec:conc}
+
+
+\subsection{Encajando Nominos}
+
+Para resolver el primer problema de hacer encajar los $nominos$ se siguió una solución usando $backtracking$ conforme a la naturaleza de este.
+
+Para lograr esto se toma una figura $(Nomino)$, se genera una posición valida dentro del tablero actual donde se quieren encajar todas los $nominos$. Luego se coloca en esa posición y se vuelve a repetir el proceso con la próxima figura y el tablero resultado de poner la anterior. 
+
+Tener en cuenta que en la implementación de este algoritmo se uso la ventaja de la \emph {evaluación perezosa} de Haskell para disminuir los cómputos y además como las posibles posiciones de la figura $ i $ se ve disminuida en cada iteración dado que el tablero donde lo tiene que colocar ya tiene $i -1$ figuras fijadas se hace una gran poda en la generación de las combinaciones posibles.
+
+Si en algún momento se logran poner 9 figuras entonces se ha logrado formar un Sudoku por lo que ya queda resuelto este primer problema. Y para completarlo se calcula el campo $ posibilidades $ y se crea un Sudoku listo para resolver.
+
+\subsection{Resolviendo Sudoku }
+
+Este problema es abordado también mediante una solución recursiva. La primera idea que se pudiera pensar es elegir de todos los posibles pero eso rápidamente pudiera ser infactible ya que si digamos que existan $50$ casillas vacías, esto nos pudiera llevar a tener que generar por esta vía $515377520732011331036461129765621272702107522001$ tableros de Sudoku por lo que se desecha esto en parte.
+
+Se quiere lograr una manera de que al fijarse una celda repercuta en los posibles de las demás celdas vacías disminuyendo el número de tableros generados. Para lograr esto se siguen los siguientes pasos:
+
+\begin{enumerate}
+	\item Se va actualizando el campo posibilidades del Sudoku actual hasta que no existan en ninguna posición $[i,j]$ una lista con un solo elemento posible, es decir fijar las casillas que tienen solo un posible valor ya que es seguro que ese va ahí dada las restricciones del Sudoku.
+	
+	\item Con este nuevo tablero se entra en el caso base de la recursividad el cual tiene dos subcasos:
+	\begin{itemize}
+		\item  Está bloqueado el Sudoku, es decir  existe un casilla $[i,j]$ del tablero que está vacía y ademas la lista de posibilidades para esa casilla esta vacía, por lo tanto dado las restricciones del Sudoku no puede ir allí ningún numero del $1$ al $9$. Por lo tanto se devuelve $Nothing$ que indica que por esa rama del árbol que se eligió no se alcanzó la solución 
+		
+		\item Esta completo el Sudoku , llegamos a un estado donde todas las casillas están llenas y no existen conflictos. Alcanzamos una solución 
+		
+	\end{itemize}
+	
+	\item Llegando al caso recursivo, primero se generan dos Sudokus nuevos a a partir del actual. Para lograr esto se elige primero una casilla pivote. Esta sera la que menor cantidad de posibles valores a colocar tenga de esta manera será más probable que se fije el correcto. A partir de aquí se generan dos nuevos subcasos para la generación de los dos nuevos sudokus: 
+	\begin{itemize}
+		\item La casilla pivote elegida tiene exactamente dos posibles valores por lo que los sudokus que se generan son el resultado de fijar un valor o el otro. Creando así dos caminos de decisión para seguir buscando otra solución.
+		
+		\item La casilla pivote tiene más de dos posibilidades por lo que los tableros que voy a generar son uno con el primer valor de la lista de posibilidades fijado y el otro con la casilla vacía pero removiendo el valor que se fijó en el anterior de los posibles valores para esa casilla. De esta manera se garantiza que si fijando ese valor falló va a regresar a este punto se va a ir por la otra rama en la cual no va a poder fijar en esa casilla el valor que ya se fijo anteriormente.
+	\end{itemize} 
+	 
+	Con estos dos nuevos sudokus se llama recursivo con uno y con el otro comenzando el proceso de nuevo usando, de manera de que si el primero devuelve $Nothing$ intenta irse por la otra rama del árbol de decisión. El algoritmo hace DFS por un árbol binario donde cada nodo representa una decisión tomada para llenar una casilla o eliminar una posibilidad de llenado para esta.   
+		 
+\end{enumerate}
+
+   
+
+
+%===================================================================================
+
+\section{Como Usarlo}
+
+%===================================================================================
+% Recomendaciones
+%-----------------------------------------------------------------------------------
+\section{Recomendaciones}\label{sec:rec}
+
+Analizar si es posible mejorar mejor este algoritmo de solución teniendo en cuenta el patrón de que si en una misma fila aparecen exactamente $k $ valores que pertenecen unicamente a $k$ lista de posibilidades es posibles fijarlos directamente a cada uno en las casilla correspondientes a esas listas ya que son ellos los que van seguro ahí.   
+
+%===================================================================================
+
+
+
+%===================================================================================
+% Bibliografía
+%-----------------------------------------------------------------------------------
+
+
+%-----------------------------------------------------------------------------------
+
+\label{end}
+
+\end{document}
+
+%===================================================================================
