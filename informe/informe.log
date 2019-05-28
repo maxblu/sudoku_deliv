@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2019.3.23)  27 MAY 2019 21:06
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2019.3.23)  27 MAY 2019 22:42
 entering extended mode
 **informe.tex
 (D:\4to\Haskell\my-sudoku\sudoku_deliv\informe\informe.tex
@@ -680,15 +680,15 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
 
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 237.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 239.
  [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 237.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 239.
 
 (D:\4to\Haskell\my-sudoku\sudoku_deliv\informe\informe.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 237.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 237.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 239.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 239.
 Package rerunfilecheck Info: File `informe.out' has not changed.
-(rerunfilecheck)             Checksum: 4055CDABE5AB4356C9F7DA944AD8785A;416.
+(rerunfilecheck)             Checksum: 909D9A352C12BC9A0A172909855604C4;409.
  ) 
 Here is how much of TeX's memory you used:
  8392 strings out of 494045
@@ -708,7 +708,7 @@ ms/Mikatext/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/programs/Mikatext/fonts
 fonts/cm/cmsy10.pfb><D:/programs/Mikatext/fonts/type1/public/amsfonts/cm/cmsy7.
 pfb><D:/programs/Mikatext/fonts/type1/public/amsfonts/cm/cmti10.pfb><D:/program
 s/Mikatext/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on informe.pdf (2 pages, 160242 bytes).
+Output written on informe.pdf (2 pages, 161984 bytes).
 PDF statistics:
  100 PDF objects out of 1000 (max. 8388607)
  13 named destinations out of 1000 (max. 500000)
