@@ -160,7 +160,7 @@ try_mover ::  [(Int,Int,Int)] -> Int -> Int -> Nomino
 try_mover nomino pasox pasoy = Nomino { valor = [((fstT x)+pasox, (second x)+pasoy, lasty x )  | x <-nomino ,  (fstT x) + pasox >= 1 && (fstT x) + pasox <= 9  
                                                                                                                 && (second x)+pasoy >= 1 &&(second x)+pasoy <= 9    ]} 
 
--- todos lo check devuelven falso si hay alguien en conflicto
+-- todos lo check devuelven true si hay alguien en conflicto
 check_row :: Int -> Int  -> Matrix Int -> Bool
 check_row  i  val matrix_actual | Data.Vector.elem val (Data.Matrix.getRow i matrix_actual) = True 
                                 | otherwise = False
@@ -189,7 +189,7 @@ dame_nomino:: [Nomino] -> (Int,Int,Int) -> Nomino
 dame_nomino (x:xs) tripla   = if Prelude.elem  tripla (valor x) then x else (dame_nomino xs tripla)
 
 update_posib :: [Nomino] -> Matrix Int  -> Matrix [Int]
-update_posib  actual_nominoes matrix_actual  = Data.Matrix.fromList 9 9 [ [val | val <- [1..9],( 0 == (getElem i j matrix_actual)   ) &&(val /= (getElem i j matrix_actual)) && (not (check_row i val matrix_actual  ))&& (not (check_column j val matrix_actual  ))&& (not (check_nomino (valor (pertenece_nomino_list actual_nominoes i j )) val ) )  ] | i <-[1..9] , j <- [1..9]  ]
+update_posib  actual_nominoes matrix_actual  =   Data.Matrix.fromList 9 9 [ [val | val <- [1..9],( 0 == (getElem i j matrix_actual)   ) &&(val /= (getElem i j matrix_actual)) && (not (check_row i val matrix_actual  ))&& (not (check_column j val matrix_actual  ))&& (not (check_nomino (valor (pertenece_nomino_list actual_nominoes i j )) val ) )  ] | i <-[1..9] , j <- [1..9]  ]
                                                                                                                                                                         
                                                                         -- ]
 
@@ -270,6 +270,8 @@ collapse [] = []
 collapse (nomino: demas) = valor(nomino) Prelude.++ collapse demas
 
 
+setNomino  ( (l , m , val): xs )  valu i j | l == i && m ==j = [(i,j,valu)] Prelude.++ xs 
+                                          | otherwise = [(l,m,val)] Prelude.++ (setNomino xs valu i j)
 
 
 upd_figs :: [Nomino] -> Matrix [Int] -> [Nomino]
@@ -289,14 +291,16 @@ completado  matrix_actual | Data.Vector.elem 0 matrix_actual = False
                           | otherwise = True
 
 -- bloqueado ::  Sudoku -> Bool
-bloqueado s             | empty_with_no_posib = True
+bloqueado s             | empty_with_no_posib  || valid = True
                         |otherwise = False
                          where 
                             empty_with_no_posib = (Prelude.length  [ (i,j) | 
                                                                         i <- [1..9] , j <- [1..9] , 
                                                                         (Data.Matrix.getElem i j (tablero s  )) == 0 && 
                                                                         (Prelude.length (Data.Matrix.getElem i j (posibilidades s ))) == 0] ) /=0
+                            valid = ((Prelude.length (conflic (tablero s) (nominoes s)   )) /= 0)  
 
+conflic matrix_actual actual_nominoes = [ (i,j) |  i <- [1..9] , j <- [1..9]    ,  (0 /= (getElem i j matrix_actual)   ) &&(( (check_row i  (getElem i j  matrix_actual) (setElem 0 (i,j) matrix_actual) ))||   ( (check_column j (getElem i j  matrix_actual) (setElem 0 (i,j) matrix_actual)  ))||  ( (check_nomino (setNomino (valor (pertenece_nomino_list actual_nominoes i j )  ) 0 i j ) (getElem i j  matrix_actual) )) )] 
 
 
 
@@ -315,3 +319,16 @@ solve' g
 stell_posib sudk =  if queden_uno >0  then stell_posib new_sud else new_sud
                     where
                         (new_sud,queden_uno) = fil_posib (nominoes sudk) (tablero sudk) (posibilidades sudk )
+
+-- cuadrar_sudoku sudoku_actual | (posibilidades sudoku_actual ) ==  (posibilidades sudoku_nuevo) = sudoku_nuevo
+--                              | otherwise = cuadrar_sudoku sudoku_nuevo
+--                              where 
+--                                 list_post_fijas = search (tablero sudoku_actual )
+--                                 sudoku_nuevo =  dolor_de_cabeza  list_post_fijas (nominoes sudoku_actual) (tablero sudoku_actual) (posibilidades sudoku_actual ) 
+
+-- search tabl = [ (i,j) | i <- [1 .. 9 ] ,j <- [1 .. 9 ] , (getElem i j tabl) != 0 ]
+
+
+-- dolor_de_cabeza [] nominos tabl posibs = Sudoku { nominoes = nominos , tablero = tabl , posibilidades= posibs  } 
+-- dolor_de_cabeza (pos ,resto) nominos tabl posibs = dolor_de_cabeza  (restp Prelude.++ nuevos)  (nominoes new_nom ) (tablero tabl_new)  (posibilidades posibs_new )  
+--                                                     where 
