@@ -320,15 +320,3 @@ stell_posib sudk =  if queden_uno >0  then stell_posib new_sud else new_sud
                     where
                         (new_sud,queden_uno) = fil_posib (nominoes sudk) (tablero sudk) (posibilidades sudk )
 
--- cuadrar_sudoku sudoku_actual | (posibilidades sudoku_actual ) ==  (posibilidades sudoku_nuevo) = sudoku_nuevo
---                              | otherwise = cuadrar_sudoku sudoku_nuevo
---                              where 
---                                 list_post_fijas = search (tablero sudoku_actual )
---                                 sudoku_nuevo =  dolor_de_cabeza  list_post_fijas (nominoes sudoku_actual) (tablero sudoku_actual) (posibilidades sudoku_actual ) 
-
--- search tabl = [ (i,j) | i <- [1 .. 9 ] ,j <- [1 .. 9 ] , (getElem i j tabl) != 0 ]
-
-
--- dolor_de_cabeza [] nominos tabl posibs = Sudoku { nominoes = nominos , tablero = tabl , posibilidades= posibs  } 
--- dolor_de_cabeza (pos ,resto) nominos tabl posibs = dolor_de_cabeza  (restp Prelude.++ nuevos)  (nominoes new_nom ) (tablero tabl_new)  (posibilidades posibs_new )  
---                                                     where 
